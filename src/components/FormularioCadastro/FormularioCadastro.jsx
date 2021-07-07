@@ -1,30 +1,25 @@
 import React, { useState } from "react";
 import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
 
-function FormularioCadastro() {
+function FormularioCadastro({aoEnviar}) {
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [cpf, setCpf] = useState("");
-  //   const [promocoes, setPromocoes] = useState("");
-  //   const [novidades, setNovidades] = useState("");
+  const [promocoes, setPromocoes] = useState(true);
+  const [novidades, setNovidades] = useState(true);
 
   return (
     <>
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          console.log(nome, sobrenome);
+          aoEnviar({ nome, sobrenome, cpf, novidades, promocoes });
         }}
       >
         <TextField
           value={nome}
           onChange={(event) => {
-            let tempNome = event.target.value;
-
-            if (tempNome.length >= 3) {
-              tempNome = tempNome.substr(0, 3);
-            }
-            setNome(tempNome);
+            setNome(event.target.value);
           }}
           id='nome'
           label='Nome'
@@ -57,12 +52,30 @@ function FormularioCadastro() {
 
         <FormControlLabel
           label='Promoções'
-          control={<Switch name='promocoes' defaultChecked color='primary' />}
+          control={
+            <Switch
+              checked={promocoes}
+              onChange={(event) => {
+                setPromocoes(event.target.checked);
+              }}
+              name='promocoes'
+              color='primary'
+            />
+          }
         />
 
         <FormControlLabel
           label='Promoções'
-          control={<Switch name='novidades' defaultChecked color='primary' />}
+          control={
+            <Switch
+              checked={novidades}
+              onChange={(event) => {
+                setNovidades(event.target.checked);
+              }}
+              name='novidades'
+              color='primary'
+            />
+          }
         />
 
         <Button type='submit' variant='contained' color='primary'>
